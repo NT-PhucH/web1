@@ -4,10 +4,48 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Web 1</title>
+
+    <!-- Link CSS của bạn -->
+    <link rel="stylesheet" href="Home.css" />
   </head>
+
   <body>
-    <a href="/Giao diện/Home.html">Trang chủ</a>
-    <a href="">Lịch học</a>
-    <a href="">Điểm số</a>
+    <!-- 🟦 NAVBAR -->
+    <nav class="navbar">
+      <h2 class="logo">Infinity<span>UI</span></h2>
+
+      <ul class="nav-links">
+        <li><a href="/Giao diện/Home.html">Trang chủ</a></li>
+        <li><a href="">Lịch học</a></li>
+        <li><a href="">Điểm số</a></li>
+        <li><a href="">Góp ý</a></li>
+      </ul>
+
+      <!-- 🟦 MENU HAMBURGER -->
+      <div class="hamburger">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+    </nav>
+
+    <!-- 🟩 HERO -->
+    <section class="hero">
+      <h1>Welcome to <span>InfinityUI</span></h1>
+      <h4>Clean, Modern, Powerful</h4>
+    </section>
+
+    <!-- JS -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const hamburger = document.querySelector(".hamburger");
+        const navLinks = document.querySelector(".nav-links");
+
+        hamburger.addEventListener("click", () => {
+          hamburger.classList.toggle("active");
+          navLinks.classList.toggle("active");
+        });
+      });
+    </script>
   </body>
 </html>
