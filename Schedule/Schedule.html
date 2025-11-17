@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lịch Tháng</title>
+    <link rel="stylesheet" href="Schedule.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+  <a href="../Home/Home.html"><h2 class="logo">Infinity<span>UI</span></h2></a>
+
+  <ul class="nav-links">
+    <li><a href="../Home/Home.html">Trang chủ</a></li>
+    <li><a href="Schedule.html">Lịch học</a></li>
+    <li><a href="#">Điểm số</a></li>
+    <li><a href="../About/About.html">Góp ý</a></li>
+  </ul>
+
+  <div class="hamburger">
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </div>
+</nav>
+
+    <div class="layout">
+      <!-- LỊCH BÊN TRÁI -->
+      <div class="left">
+        <div class="calendar-container">
+          <div class="calendar-header">
+            <button id="prevBtn">◀</button>
+            <h2 id="monthYear"></h2>
+            <button id="nextBtn">▶</button>
+          </div>
+
+          <div class="calendar">
+            <div class="weekday">T2</div>
+            <div class="weekday">T3</div>
+            <div class="weekday">T4</div>
+            <div class="weekday">T5</div>
+            <div class="weekday">T6</div>
+            <div class="weekday">T7</div>
+            <div class="weekday">CN</div>
+
+            <div id="daysContainer" class="days"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GHI CHÚ BÊN PHẢI -->
+      <div class="right">
+  <div id="lessonCard" class="lesson-card">
+    <h2 class="lesson-title">Lịch học</h2>
+    <p>Hãy chọn một ngày trong lịch.</p>
+  </div>
+</div>
+
+
+    <script src="Schedule.js"></script>
+  </body>
+</html>
