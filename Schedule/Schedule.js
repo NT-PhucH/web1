@@ -23,6 +23,8 @@ const lessons = {
   "2025-11-18": [],
 };
 
+//
+
 let currentDate = new Date();
 
 // =============================
@@ -54,6 +56,12 @@ function renderCalendar() {
     const div = document.createElement("div");
     div.classList.add("day");
     div.textContent = i;
+
+    // Kiểm tra hôm đó có lịch học không
+    const dateKey = getDateKey(i, month, year);
+    if (lessons[dateKey] && lessons[dateKey].length > 0) {
+      div.classList.add("has-lesson");
+    }
 
     const today = new Date();
     if (

@@ -4,7 +4,7 @@ body {
   color: #fff;
   display: flex;
   justify-content: center;
-  padding-top: 40px;
+  padding-top: 90px;
 }
 
 .calendar-container {
@@ -140,7 +140,7 @@ body {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   width: 100%;
 
-  min-height: calc(100vh - 80px); /* ⭐ chiều cao bằng lịch bên trái */
+  min-height: calc(92vh - 80px);
   display: flex;
   flex-direction: column;
 }
@@ -160,7 +160,8 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 1000;
+  z-index: 9999;
+  background: #111;
 }
 
 .logo span {
@@ -259,4 +260,19 @@ body {
 .navbar a {
   text-decoration: none;
   color: inherit;
+}
+
+.day.has-lesson {
+  position: relative;
+}
+
+.day.has-lesson::after {
+  content: "";
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  width: 8px;
+  height: 8px;
+  background: #00eaff;
+  border-radius: 50%;
 }
