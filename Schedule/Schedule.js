@@ -15,32 +15,31 @@ function parseDate(dateStr) {
   if (!dateStr) return null;
   const parts = dateStr.split("/");
   if (parts.length === 3) {
-    // Chuyển từ dd/mm/yyyy -> yyyy-mm-dd
     return `${parts[2]}-${parts[1]}-${parts[0]}`;
   }
   return null;
 }
 
 function convertShiftToTime(shift) {
-  // Xử lý nếu shift là dạng "7,8,9" -> lấy số đầu và số cuối -> "7-9"
   if (shift.includes(",")) {
     const parts = shift.split(",");
     const start = parts[0];
     const end = parts[parts.length - 1];
-    shift = `${start}-${end}`; // Chuyển thành dạng "7-9" để map
+    shift = `${start}-${end}`;
   }
 
-  // Bản đồ giờ học (Thêm các ca lẻ nếu cần)
   const timeMap = {
     "1-3": { start: "07:00", end: "09:25" },
     "4-6": { start: "09:35", end: "12:00" },
     "7-9": { start: "12:30", end: "14:55" },
     "10-12": { start: "15:05", end: "17:30" },
     "13-15": { start: "18:00", end: "20:25" },
-    // Thêm các ca đặc biệt nếu trường bạn có
     "1-2": { start: "07:00", end: "08:35" },
     "3-3": { start: "08:40", end: "09:25" },
+    "4-5": { start: "09:35", end: "11:10" },
+    "6-6": { start: "11:15", end: "12:00" },
     "7-8": { start: "12:30", end: "14:05" },
+    "9-9": { start: "14:10", end: "14:55" },
   };
 
   return timeMap[shift] || { start: `Ca ${shift}`, end: "" };
@@ -68,7 +67,6 @@ function renderCalendar() {
   const daysInPrevMonth = new Date(year, month, 0).getDate();
   const startDay = firstDay === 0 ? 6 : firstDay - 1;
 
-  // Vẽ ngày tháng trước
   for (let i = startDay - 1; i >= 0; i--) {
     const div = document.createElement("div");
     div.classList.add("day", "other-month");
@@ -76,7 +74,6 @@ function renderCalendar() {
     daysContainer.appendChild(div);
   }
 
-  // Vẽ ngày tháng hiện tại
   const today = new Date();
   for (let i = 1; i <= daysInMonth; i++) {
     const div = document.createElement("div");
@@ -85,7 +82,6 @@ function renderCalendar() {
 
     const dateKey = getDateKey(i, month, year);
 
-    // Kiểm tra có lịch học không để thêm dấu chấm
     if (lessons[dateKey] && lessons[dateKey].length > 0) {
       div.classList.add("has-lesson");
     }
@@ -101,7 +97,6 @@ function renderCalendar() {
     daysContainer.appendChild(div);
   }
 
-  // Vẽ ngày tháng sau cho đủ lưới
   const totalCells = 42;
   const usedCells = daysContainer.childElementCount;
   const remaining = totalCells - usedCells;
@@ -195,14 +190,15 @@ if (hamburger) {
 }
 
 // ==========================================
-// 4. GỌI API LẤY DỮ LIỆU
+// 4. LOGIC TỰ ĐỘNG TẢI DỮ LIỆU
 // ==========================================
 async function loadScheduleFromAPI() {
   const lessonCard = document.getElementById("lessonCard");
 
-  // Lấy user từ localStorage (Lưu ý: phải đăng nhập thành công ở trang Login mới có cái này)
+  // Kiểm tra xem đã từng đăng nhập chưa
   const storedUser = localStorage.getItem("user_credentials");
 
+  // NẾU CHƯA ĐĂNG NHẬP -> Hiện nút bắt đăng nhập
   if (!storedUser) {
     lessonCard.innerHTML = `
         <div style="text-align: center; padding: 20px;">
@@ -216,22 +212,24 @@ async function loadScheduleFromAPI() {
     return;
   }
 
+  // NẾU ĐÃ CÓ THÔNG TIN -> Tự động lấy và gửi lên Server
   const { username, password } = JSON.parse(storedUser);
 
-  // Hiệu ứng Loading
+  // Hiển thị Loading
   lessonCard.innerHTML = `
       <div style="text-align: center; margin-top: 50px;">
         <div class="loader" style="border: 4px solid #333; border-top: 4px solid #00eaff; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
-        <p style="margin-top: 15px; color: #00eaff;">Đang đồng bộ dữ liệu từ QLĐT...</p>
+        <p style="margin-top: 15px; color: #00eaff;">Đang cập nhật dữ liệu mới nhất...</p>
+        <p style="font-size: 12px; color: #666;">(Quá trình này mất khoảng 15-30 giây)</p>
       </div>
       <style>@keyframes spin {0% {transform: rotate(0deg);} 100% {transform: rotate(360deg);}}</style>
   `;
 
   try {
-    console.log("Bắt đầu gọi API...");
+    // --- SỬA LINK BACKEND CỦA BẠN Ở ĐÂY (Nếu deploy lên Render thì thay link Render vào) ---
+    const API_URL = "http://127.0.0.1:3000/api/schedule";
 
-    // --- ĐỔI TỪ LOCALHOST SANG IP 127.0.0.1 ĐỂ TRÁNH LỖI TRÊN WINDOWS ---
-    const res = await fetch("http://127.0.0.1:3000/api/schedule", {
+    const res = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
@@ -240,60 +238,88 @@ async function loadScheduleFromAPI() {
     const responseData = await res.json();
 
     if (!responseData.success) {
-      lessonCard.innerHTML = `<p style="color: red; text-align: center;">Lỗi từ Server: ${responseData.message}</p>`;
+      // Nếu lỗi do sai mật khẩu (có thể do đổi pass), xóa localStorage bắt đăng nhập lại
+      if (responseData.message.includes("Sai tài khoản")) {
+        localStorage.removeItem("user_credentials");
+        alert(
+          "Phiên đăng nhập hết hạn hoặc mật khẩu đã đổi. Vui lòng đăng nhập lại."
+        );
+        window.location.href = "../Login/Login.html";
+        return;
+      }
+      lessonCard.innerHTML = `<p style="color: red; text-align: center;">Lỗi: ${responseData.message}</p>`;
       return;
     }
 
     console.log("Dữ liệu nhận được:", responseData.data);
     const apiData = responseData.data;
 
-    lessons = {};
+    // Lưu dữ liệu lịch vào LocalStorage để lần sau mở lên hiển thị ngay (Offline mode)
+    localStorage.setItem("cached_schedule", JSON.stringify(apiData));
 
-    // Xử lý dữ liệu trả về
-    apiData.forEach((item) => {
-      const dateKey = parseDate(item.ngayHoc);
-      if (!dateKey) return;
-
-      const timeInfo = convertShiftToTime(item.caHoc);
-
-      if (!lessons[dateKey]) {
-        lessons[dateKey] = [];
-      }
-
-      lessons[dateKey].push({
-        start: timeInfo.start,
-        end: timeInfo.end,
-        title: item.tenMonHoc,
-        room: item.phongHoc,
-        teacher: item.giangVien,
-        rawShift: item.caHoc,
-      });
-    });
-
-    console.log("Dữ liệu sau khi xử lý:", lessons);
-
-    // Vẽ lại lịch sau khi có dữ liệu
-    renderCalendar();
-
-    // Hiển thị bài học hôm nay
-    const today = new Date();
-    renderLessons(today.getDate(), today.getMonth(), today.getFullYear());
+    processAndRenderData(apiData);
   } catch (err) {
     console.error("Lỗi kết nối:", err);
-    lessonCard.innerHTML = `
-        <div style="text-align: center; padding: 20px;">
-            <p style="color: #ff4d4d; font-weight: bold;">Không kết nối được Server!</p>
-            <p style="font-size: 13px; color: #ccc;">Vui lòng kiểm tra:</p>
-            <ul style="text-align: left; display: inline-block; color: #888; font-size: 13px;">
-                <li>1. Bạn đã chạy lệnh "node server.js" chưa?</li>
-                <li>2. Terminal có báo lỗi gì không?</li>
-                <li>3. Thử tắt server và chạy lại.</li>
-            </ul>
-        </div>
-    `;
+
+    // Nếu lỗi mạng (Server chưa bật), thử lấy dữ liệu cũ đã lưu (Cache)
+    const cachedData = localStorage.getItem("cached_schedule");
+    if (cachedData) {
+      console.log("Đang dùng dữ liệu Offline...");
+      processAndRenderData(JSON.parse(cachedData));
+    } else {
+      lessonCard.innerHTML = `<p style="color: red; text-align: center;">Không kết nối được Server Backend.</p>`;
+    }
   }
 }
 
-// Chạy lần đầu
+// Hàm xử lý dữ liệu và vẽ lịch (Tách ra để tái sử dụng cho Offline mode)
+function processAndRenderData(apiData) {
+  lessons = {};
+
+  apiData.forEach((item) => {
+    const dateKey = parseDate(item.ngayHoc);
+    if (!dateKey) return;
+
+    const timeInfo = convertShiftToTime(item.caHoc);
+
+    if (!lessons[dateKey]) {
+      lessons[dateKey] = [];
+    }
+
+    lessons[dateKey].push({
+      start: timeInfo.start,
+      end: timeInfo.end,
+      title: item.tenMonHoc,
+      room: item.phongHoc,
+      teacher: item.giangVien,
+      rawShift: item.caHoc,
+    });
+  });
+
+  renderCalendar();
+  const today = new Date();
+  renderLessons(today.getDate(), today.getMonth(), today.getFullYear());
+}
+
+// ==========================================
+// MAIN - CHẠY KHI MỞ TRANG
+// ==========================================
+
+// 1. Vẽ khung lịch trước
 renderCalendar();
+
+// 2. Kiểm tra xem có dữ liệu cũ (Cache) không? Hiển thị ngay cho mượt
+const cachedData = localStorage.getItem("cached_schedule");
+if (cachedData) {
+  console.log("Hiển thị dữ liệu Cache trước...");
+  processAndRenderData(JSON.parse(cachedData));
+} else {
+  // Nếu chưa có cache thì hiện loading
+  const lessonCard = document.getElementById("lessonCard");
+  lessonCard.innerHTML = `<h2 class="lesson-title">Đang tải dữ liệu...</h2>`;
+}
+
+// 3. Sau đó gọi API để cập nhật dữ liệu mới nhất (chạy ngầm)
+// Bạn có thể bỏ dòng này đi nếu muốn người dùng BẤM NÚT mới cập nhật
+// Hoặc giữ lại để tự động cập nhật mỗi khi vào trang
 loadScheduleFromAPI();
