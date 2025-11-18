@@ -2,8 +2,8 @@ body {
   font-family: Poppins, sans-serif;
   background: #111;
   color: #fff;
-  display: flex;
-  justify-content: center;
+  /* display: flex;
+  justify-content: center; */
   padding-top: 90px;
 }
 
@@ -275,4 +275,71 @@ body {
   height: 8px;
   background: #00eaff;
   border-radius: 50%;
+}
+
+.update-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  padding-right: 40px;
+}
+
+.update-wrapper button {
+  background: #121212;
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: 2px solid #00eaff;
+  color: #00eaff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.update-wrapper button:hover {
+  background: #00eaff;
+  color: #000;
+}
+
+/* -----------------------------------------------------
+   RESPONSIVE CHO ĐIỆN THOẠI 
+   Khi màn hình < 768px → đổi layout thành 1 cột
+-------------------------------------------------------*/
+@media (max-width: 768px) {
+  body {
+    padding-top: 70px;
+  }
+
+  /* Bố cục chuyển thành 1 cột */
+  .layout {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .left,
+  .right {
+    width: 100%;
+    padding: 15px;
+    border-right: none;
+  }
+
+  /* Lịch full width */
+  .calendar-container {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  /* Khung lịch học full width, xuống dưới */
+  .lesson-card {
+    width: 100%;
+    min-height: auto;
+    margin-top: 20px;
+  }
+
+  /* Nút cập nhật lịch học căn giữa trong mobile */
+  .update-wrapper {
+    justify-content: center;
+    padding-right: 0;
+  }
 }

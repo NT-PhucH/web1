@@ -4,24 +4,24 @@ const monthYear = document.getElementById("monthYear");
 // =============================
 // DỮ LIỆU LỊCH HỌC (SAU NÀY LẤY TỪ API)
 // =============================
-const lessons = {
-  "2025-11-17": [
-    {
-      start: "12:30",
-      end: "14:55",
-      title: "Lý thuyết cơ sở dữ liệu",
-      room: "303-TA1 TA1- 8T",
-    },
-    {
-      start: "15:05",
-      end: "17:30",
-      title: "Tiếng Anh 1",
-      room: "303-TA1 TA1- 8T",
-    },
-  ],
+// const lessons = {
+//   "2025-11-17": [
+//     {
+//       start: "12:30",
+//       end: "14:55",
+//       title: "Lý thuyết cơ sở dữ liệu",
+//       room: "303-TA1 TA1- 8T",
+//     },
+//     {
+//       start: "15:05",
+//       end: "17:30",
+//       title: "Tiếng Anh 1",
+//       room: "303-TA1 TA1- 8T",
+//     },
+//   ],
 
-  "2025-11-18": [],
-};
+//   "2025-11-18": [],
+// };
 
 //
 
@@ -160,3 +160,43 @@ hamburger.addEventListener("click", () => {
   hamburger.classList.toggle("active");
   navLinks.classList.toggle("active");
 });
+
+window.addEventListener("load", () => {
+  const today = new Date();
+
+  // Auto load lịch học hôm nay
+  renderLessons(today.getDate(), today.getMonth(), today.getFullYear());
+});
+
+async function loadScheduleFromAPI() {
+  try {
+    const res = await fetch("http://localhost:3000/api/schedule");
+    const data = await res.json();
+
+    console.log("Lịch học từ backend:", data);
+
+    // Chuyển dữ liệu API → lessons
+    for (let item of data) {
+      const dateKey = item.date; // YYYY-MM-DD
+
+      if (!lessons[dateKey]) lessons[dateKey] = [];
+
+      lessons[dateKey].push({
+        start: item.timeStart,
+        end: item.timeEnd,
+        title: item.subject,
+        room: item.room,
+      });
+    }
+
+    // Sau khi nạp dữ liệu backend → vẽ lại lịch
+    renderCalendar();
+    const today = new Date();
+    renderLessons(today.getDate(), today.getMonth(), today.getFullYear());
+  } catch (err) {
+    console.error("Lỗi tải lịch học từ backend:", err);
+  }
+}
+
+// CHẠY NGAY KHI MỞ TRANG
+loadScheduleFromAPI();
