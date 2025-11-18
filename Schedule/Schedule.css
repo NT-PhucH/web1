@@ -1,15 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
 body {
-  font-family: Poppins, sans-serif;
+  font-family: "Poppins", sans-serif;
   background: #111;
   color: #fff;
-  /* display: flex;
-  justify-content: center; */
   padding-top: 90px;
+  margin: 0; /* Reset margin body */
 }
 
 .calendar-container {
   width: 90%;
   max-width: 650px;
+  margin: 0 auto; /* Căn giữa container */
 }
 
 .calendar-header {
@@ -21,6 +23,8 @@ body {
 
 .calendar-header h2 {
   font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .calendar-header button {
@@ -31,6 +35,11 @@ body {
   color: #000;
   border-radius: 6px;
   font-weight: bold;
+  transition: 0.3s;
+}
+.calendar-header button:hover {
+  background: #fff;
+  box-shadow: 0 0 10px #00eaff;
 }
 
 .calendar {
@@ -42,8 +51,9 @@ body {
 .weekday {
   text-align: center;
   font-weight: bold;
-  padding-bottom: 5px;
+  padding-bottom: 10px;
   border-bottom: 2px solid #00eaff;
+  margin-bottom: 5px;
 }
 
 .days {
@@ -59,31 +69,51 @@ body {
   justify-content: flex-start;
   align-items: flex-start;
   font-size: 1rem;
+  cursor: pointer;
+  transition: 0.2s;
+  border: 1px solid transparent;
+}
+
+.day:hover {
+  background: #2a2a2a;
+  border-color: #444;
+}
+
+/* Hiệu ứng khi click chọn ngày */
+.day.selected {
+  background: #252525;
+  border: 2px solid #fff;
+  transform: scale(0.98);
 }
 
 .day.other-month {
   opacity: 0.3;
+  pointer-events: none; /* Không cho click tháng khác */
 }
 
 .day.today {
   border: 2px solid #00eaff;
+  box-shadow: inset 0 0 10px rgba(0, 234, 255, 0.2);
 }
 
 .layout {
   display: flex;
   width: 100%;
-  height: 100vh;
+  min-height: 80vh;
 }
 
 .left {
-  width: 50%;
+  width: 55%; /* Tăng kích thước phần lịch */
   padding: 20px;
   border-right: 2px solid #222;
+  display: flex;
+  justify-content: center;
 }
 
 .right {
-  width: 50%;
+  width: 45%;
   padding: 20px;
+  padding-right: 5%;
 }
 
 .lesson-title {
@@ -92,65 +122,91 @@ body {
   margin-bottom: 10px;
   text-align: center;
   color: #00eaff;
+  border-bottom: 1px solid #333;
+  padding-bottom: 15px;
 }
 
 .lesson-item {
   display: flex;
   gap: 20px;
-  margin: 25px 0;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #222;
+  margin: 20px 0;
+  padding: 15px;
+  background: #222;
+  border-radius: 10px;
+  border-left: 4px solid #00eaff;
+  transition: 0.3s;
+}
+
+.lesson-item:hover {
+  transform: translateX(5px);
+  background: #2a2a2a;
 }
 
 .time-block {
   font-weight: bold;
-  text-align: right;
+  text-align: center;
   min-width: 80px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: #00eaff;
-}
-
-.time-block div {
-  line-height: 1.3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .lesson-info {
-  border-left: 2px solid #00eaff;
-  padding-left: 15px;
+  flex: 1;
+  padding-left: 10px;
+  border-left: 1px solid #444;
 }
 
 .lesson-info-title {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  color: #00eaff;
+  color: #fff;
+  margin-bottom: 5px;
 }
 
 .lesson-room {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #ccc;
-  margin-top: 5px;
+  margin-top: 3px;
+}
+.lesson-room i {
+  color: #00eaff;
+  width: 20px;
+  text-align: center;
 }
 
 .lesson-card {
   background: #1b1b1b;
   padding: 20px;
   border-radius: 16px;
-  border: 1px solid #00eaff;
+  border: 1px solid #333; /* Viền nhẹ hơn */
   color: #fff;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   width: 100%;
-
-  min-height: calc(92vh - 80px);
-  display: flex;
-  flex-direction: column;
+  height: 100%;
+  overflow-y: auto; /* Cho phép cuộn nếu nhiều môn */
 }
 
+/* Scrollbar đẹp hơn */
+.lesson-card::-webkit-scrollbar {
+  width: 6px;
+}
+.lesson-card::-webkit-scrollbar-track {
+  background: #111;
+}
+.lesson-card::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 3px;
+}
+
+/* --- NAVBAR CSS GIỮ NGUYÊN --- */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
 .navbar {
   position: fixed;
   width: 100%;
@@ -162,19 +218,17 @@ body {
   align-items: center;
   z-index: 9999;
   background: #111;
+  border-bottom: 1px solid #222;
 }
-
 .logo span {
   color: #00eaff;
 }
-
 .nav-links {
   display: flex;
   gap: 30px;
   list-style: none;
   transition: 0.4s ease;
 }
-
 .nav-links li a {
   text-decoration: none;
   color: #fff;
@@ -183,7 +237,10 @@ body {
   transition: 0.3s ease;
   position: relative;
 }
-
+.nav-links li a.active,
+.nav-links li a:hover {
+  color: #00eaff;
+}
 .nav-links li a::after {
   content: "";
   position: absolute;
@@ -194,11 +251,9 @@ body {
   left: 0;
   transition: width 0.3s ease;
 }
-
 .nav-links li a:hover::after {
   width: 100%;
 }
-
 .hamburger {
   display: none;
   flex-direction: column;
@@ -207,7 +262,6 @@ body {
   height: 21px;
   cursor: pointer;
 }
-
 .bar {
   height: 3px;
   width: 100%;
@@ -221,7 +275,6 @@ body {
     display: flex;
     z-index: 1100;
   }
-
   .nav-links {
     position: fixed;
     right: -100%;
@@ -234,47 +287,40 @@ body {
     align-items: center;
     gap: 35px;
     transition: right 0.5s ease;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
   }
-
   .nav-links.active {
     right: 0;
   }
-
   .hamburger.active .bar:nth-child(1) {
     transform: rotate(45deg) translate(5px, 6px);
   }
-
   .hamburger.active .bar:nth-child(2) {
     opacity: 0;
   }
-
   .hamburger.active .bar:nth-child(3) {
     transform: rotate(-45deg) translate(5px, -6px);
   }
-
-  .nav-links li a {
-    font-size: 1.2rem;
-  }
 }
-
 .navbar a {
   text-decoration: none;
   color: inherit;
 }
 
+/* Chấm xanh báo hiệu có lịch */
 .day.has-lesson {
   position: relative;
 }
-
 .day.has-lesson::after {
   content: "";
   position: absolute;
-  bottom: 5px;
-  right: 5px;
-  width: 8px;
-  height: 8px;
+  bottom: 8px;
+  right: 8px;
+  width: 6px;
+  height: 6px;
   background: #00eaff;
   border-radius: 50%;
+  box-shadow: 0 0 5px #00eaff;
 }
 
 .update-wrapper {
@@ -283,9 +329,8 @@ body {
   justify-content: flex-end;
   margin-top: 15px;
   margin-bottom: 10px;
-  padding-right: 40px;
+  padding-right: 5%;
 }
-
 .update-wrapper button {
   background: #121212;
   padding: 10px 18px;
@@ -295,49 +340,39 @@ body {
   font-size: 14px;
   cursor: pointer;
   transition: 0.25s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-
 .update-wrapper button:hover {
   background: #00eaff;
   color: #000;
 }
 
-/* -----------------------------------------------------
-   RESPONSIVE CHO ĐIỆN THOẠI 
-   Khi màn hình < 768px → đổi layout thành 1 cột
--------------------------------------------------------*/
+/* RESPONSIVE */
 @media (max-width: 768px) {
   body {
     padding-top: 70px;
   }
-
-  /* Bố cục chuyển thành 1 cột */
   .layout {
     flex-direction: column;
     height: auto;
   }
-
   .left,
   .right {
     width: 100%;
     padding: 15px;
     border-right: none;
   }
-
-  /* Lịch full width */
   .calendar-container {
     max-width: 100%;
     width: 100%;
   }
-
-  /* Khung lịch học full width, xuống dưới */
   .lesson-card {
     width: 100%;
-    min-height: auto;
+    min-height: 300px;
     margin-top: 20px;
   }
-
-  /* Nút cập nhật lịch học căn giữa trong mobile */
   .update-wrapper {
     justify-content: center;
     padding-right: 0;

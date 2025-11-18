@@ -3,42 +3,50 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lịch Tháng</title>
+    <title>Lịch Học Cá Nhân</title>
     <link rel="stylesheet" href="Schedule.css" />
+
+    <!-- Thêm icon cho sinh động -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
   </head>
   <body>
     <nav class="navbar">
-  <a href="../Home/Home.html"><h2 class="logo">Infinity<span>UI</span></h2></a>
+      <a href="../Home/Home.html"
+        ><h2 class="logo">Infinity<span>UI</span></h2></a
+      >
 
-  <ul class="nav-links">
-    <li><a href="../Home/Home.html">Trang chủ</a></li>
-    <li><a href="Schedule.html">Lịch học</a></li>
-    <li><a href="#">Điểm số</a></li>
-    <li><a href="../About/About.html">Góp ý</a></li>
-  </ul>
+      <ul class="nav-links">
+        <li><a href="../Home/Home.html">Trang chủ</a></li>
+        <li><a href="Schedule.html" class="active">Lịch học</a></li>
+        <li><a href="#">Điểm số</a></li>
+        <li><a href="../About/About.html">Góp ý</a></li>
+      </ul>
 
-  <div class="hamburger">
-    <span class="bar"></span>
-    <span class="bar"></span>
-    <span class="bar"></span>
-  </div>
-</nav>
+      <div class="hamburger">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+    </nav>
 
-<div class="update-wrapper">
-  <button onclick="window.location.href='../Login/Login.html'">
-    Cập nhật lịch học
-  </button>
-</div>
-
+    <div class="update-wrapper">
+      <!-- Nút này sẽ gọi lại hàm API để refresh dữ liệu -->
+      <button onclick="loadScheduleFromAPI()">
+        <i class="fas fa-sync-alt"></i> Cập nhật lịch học
+      </button>
+    </div>
 
     <div class="layout">
       <!-- LỊCH BÊN TRÁI -->
       <div class="left">
         <div class="calendar-container">
           <div class="calendar-header">
-            <button id="prevBtn">◀</button>
-            <h2 id="monthYear"></h2>
-            <button id="nextBtn">▶</button>
+            <button id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+            <h2 id="monthYear">Tháng --</h2>
+            <button id="nextBtn"><i class="fas fa-chevron-right"></i></button>
           </div>
 
           <div class="calendar">
@@ -48,7 +56,7 @@
             <div class="weekday">T5</div>
             <div class="weekday">T6</div>
             <div class="weekday">T7</div>
-            <div class="weekday">CN</div>
+            <div class="weekday" style="color: #ff4d4d">CN</div>
 
             <div id="daysContainer" class="days"></div>
           </div>
@@ -57,10 +65,13 @@
 
       <!-- GHI CHÚ BÊN PHẢI -->
       <div class="right">
-  <div id="lessonCard" class="lesson-card">
-    <h2 class="lesson-title">Lịch học</h2>
-  </div>
-</div>
+        <div id="lessonCard" class="lesson-card">
+          <h2 class="lesson-title">Đang tải...</h2>
+          <!-- Nội dung sẽ được JS điền vào -->
+        </div>
+      </div>
+    </div>
+
     <script src="Schedule.js"></script>
   </body>
 </html>
