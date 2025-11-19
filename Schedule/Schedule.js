@@ -227,7 +227,8 @@ async function loadScheduleFromAPI() {
 
   try {
     // --- SỬA LINK BACKEND CỦA BẠN Ở ĐÂY (Nếu deploy lên Render thì thay link Render vào) ---
-    const API_URL = "http://127.0.0.1:3000/api/schedule";
+    // Đã thay bằng link Render
+    const API_URL = "https://web1-backend-o6y4.onrender.com/api/schedule";
 
     const res = await fetch(API_URL, {
       method: "POST",

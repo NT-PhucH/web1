@@ -19,12 +19,15 @@ async function login() {
 
   try {
     // 2. Gọi API kiểm tra đăng nhập
-    // --- SỬA QUAN TRỌNG: Đổi localhost -> 127.0.0.1 ---
-    const res = await fetch("http://127.0.0.1:3000/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: email, password: pass }),
-    });
+    // Đã thay bằng link Render
+    const res = await fetch(
+      "https://web1-backend-o6y4.onrender.com/api/login",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: email, password: pass }),
+      }
+    );
 
     const data = await res.json();
 
