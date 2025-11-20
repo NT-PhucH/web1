@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web 1 - Điểm số</title>
+
+    <link rel="stylesheet" href="Grade.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <a href="../Home/Home.html" style="text-decoration: none">
+        <h2 class="logo">Infinity<span>UI</span></h2>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="../Home/Home.html">Trang chủ</a></li>
+        <li><a href="../Schedule/Schedule.html">Lịch học</a></li>
+        <li><a href="#" class="active">Điểm số</a></li>
+        <li><a href="../About/About.html">Góp ý</a></li>
+      </ul>
+
+      <div class="hamburger">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+    </nav>
+
+    <div class="main-container">
+      <div class="gradient-box header-section">
+        <div class="content header-content">
+          <div class="student-info">
+            <h1>Nguyễn Trọng Phúc</h1>
+            <p>MSSV: <span class="text-neon-blue">CT090235</span></p>
+          </div>
+          <div class="action-buttons">
+            <button class="btn btn-neon">
+              <i class="fa-solid fa-eye"></i> Hiện bảng ảo
+            </button>
+            <button class="btn btn-outline">
+              <i class="fa-solid fa-table"></i> Thang điểm
+            </button>
+            <button class="btn btn-outline">
+              <i class="fa-solid fa-calculator"></i> Tính CPA
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="gradient-box stat-card">
+          <div class="content">
+            <span class="stat-label">CPA</span>
+            <span id="cpa-value" class="stat-value text-neon-blue">...</span>
+          </div>
+        </div>
+
+        <div class="gradient-box stat-card">
+          <div class="content">
+            <span class="stat-label">GPA Kỳ này</span>
+            <span id="gpa-value" class="stat-value text-neon-green">...</span>
+          </div>
+        </div>
+
+        <div class="gradient-box stat-card">
+          <div class="content">
+            <span class="stat-label">Tín chỉ hoàn thành</span>
+            <span id="credits-value" class="stat-value text-neon-purple"
+              >...</span
+            >
+          </div>
+        </div>
+
+        <div class="gradient-box stat-card">
+          <div class="content">
+            <span class="stat-label">Môn không đạt</span>
+            <span id="failed-value" class="stat-value text-neon-pink">...</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="gradient-box table-section">
+        <div class="content">
+          <div class="table-header">
+            <h2>Chi tiết bảng điểm</h2>
+          </div>
+
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th style="text-align: left">Môn học</th>
+                  <th>TC</th>
+                  <th>GK</th>
+                  <th>CC</th>
+                  <th>Cuối Kỳ</th>
+                  <th>Tổng</th>
+                  <th>Chữ</th>
+                  <th>Trạng thái</th>
+                </tr>
+              </thead>
+
+              <tbody id="grade-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="grade-scale-modal" class="modal">
+      <div class="modal-content gradient-box">
+        <div class="modal-header">
+          <h2>Bảng quy đổi điểm</h2>
+          <span class="close-btn">&times;</span>
+        </div>
+
+        <div class="table-responsive scale-container">
+          <table class="scale-table">
+            <thead>
+              <tr>
+                <th>Thang 10</th>
+                <th>Thang 4</th>
+                <th>Điểm Chữ</th>
+                <th>Xếp loại</th>
+              </tr>
+            </thead>
+            <tbody id="scale-body"></tbody>
+          </table>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            id="close-modal-btn"
+            class="btn btn-neon"
+            style="width: 100%; justify-content: center"
+          >
+            <i class="fa-solid fa-check"></i> Đóng
+          </button>
+        </div>
+      </div>
+    </div>
+    <script src="Grade.js"></script>
+  </body>
+</html>

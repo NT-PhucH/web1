@@ -32,13 +32,6 @@ body {
   color: #00eaff;
 }
 
-.logo {
-  font-size: 1.5rem; /* Kích thước chuẩn của thẻ h2 trong Home */
-  font-weight: 700;
-  color: #fff; /* Màu trắng */
-  text-decoration: none;
-}
-
 .nav-links {
   display: flex;
   gap: 30px;
@@ -131,29 +124,6 @@ body {
   .nav-links li a {
     font-size: 1.2rem;
   }
-}
-
-.hero {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.hero h1 {
-  font-size: 3rem;
-  margin-bottom: 10px;
-}
-
-.hero span {
-  color: #00eaff;
-}
-
-.hero p {
-  font-size: 1.1rem;
-  color: #aaa;
 }
 
 .navbar a {

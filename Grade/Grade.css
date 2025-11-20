@@ -1,0 +1,599 @@
+/* =====================================================
+   1. CẤU HÌNH CHUNG (Core Styles)
+   ===================================================== */
+:root {
+  --bg-dark: #0e0e16;
+  --card-bg: #111;
+  --text-main: #fff;
+  --text-muted: #888;
+
+  /* Bảng màu Gradient */
+  --neon-pink: #ff0077;
+  --neon-orange: #ff7b00;
+  --neon-yellow: #ffd300;
+  --neon-green: #00ff88;
+  --neon-blue: #00aaff;
+  --neon-purple: #a000ff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  /* QUAN TRỌNG: Dùng block để nội dung chảy từ trên xuống dưới, không bị flex kéo layout */
+  display: block;
+
+  min-height: 100vh;
+  font-family: "Poppins", sans-serif;
+  background: #020202;
+  color: #fff;
+
+  /* Đẩy nội dung xuống 160px để tránh Navbar che mất */
+  padding-top: 160px;
+
+  margin: 0;
+}
+
+/* =====================================================
+   2. NAVBAR (Thanh điều hướng)
+   ===================================================== */
+.navbar {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  padding: 18px 8%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 9999;
+  background: #111;
+  border-bottom: 1px solid #222;
+}
+
+/* Ép kích thước Logo thống nhất */
+.logo {
+  font-size: 1.7rem !important;
+  font-weight: 700 !important;
+  color: #fff;
+  text-decoration: none;
+}
+
+.logo span {
+  color: #00eaff;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+  list-style: none;
+  transition: 0.4s ease;
+}
+
+/* Ép kích thước chữ Menu thống nhất */
+.nav-links li a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  transition: 0.3s ease;
+  position: relative;
+}
+
+.nav-links li a.active,
+.nav-links li a:hover {
+  color: #00eaff;
+}
+
+.nav-links li a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: #00eaff;
+  bottom: -5px;
+  left: 0;
+  transition: width 0.3s ease;
+}
+
+.nav-links li a:hover::after {
+  width: 100%;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px;
+  height: 21px;
+  cursor: pointer;
+}
+
+.bar {
+  height: 3px;
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+  transition: all 0.4s ease;
+}
+
+@media (max-width: 1000px) {
+  .hamburger {
+    display: flex;
+    z-index: 1100;
+  }
+
+  .nav-links {
+    position: fixed;
+    right: -100%;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    background: rgba(15, 15, 15, 0.95);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 35px;
+    transition: right 0.5s ease;
+  }
+
+  .nav-links.active {
+    right: 0;
+  }
+
+  .hamburger.active .bar:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 6px);
+  }
+
+  .hamburger.active .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger.active .bar:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -6px);
+  }
+
+  .nav-links li a {
+    font-size: 1.5rem !important;
+  }
+}
+
+/* =====================================================
+   3. NỘI DUNG CHÍNH (Main Layout)
+   ===================================================== */
+.main-container {
+  width: 100%;
+  max-width: 1100px;
+
+  /* Căn giữa trang */
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+
+  /* Khoảng trống dưới chân trang */
+  padding-bottom: 50px;
+}
+
+/* --- Class tạo hiệu ứng Viền Gradient --- */
+.gradient-box {
+  position: relative;
+  background: var(--card-bg);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.gradient-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  border-radius: 20px;
+  background: linear-gradient(
+    120deg,
+    var(--neon-pink),
+    var(--neon-orange),
+    var(--neon-yellow),
+    var(--neon-green),
+    var(--neon-blue),
+    var(--neon-purple),
+    var(--neon-pink)
+  );
+  background-size: 400% 400%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: borderMove var(--speed, 6s) linear infinite;
+  pointer-events: none;
+}
+
+@keyframes borderMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  padding: 25px;
+  height: 100%;
+}
+
+/* =====================================================
+   4. HEADER SECTION (Thông tin sinh viên)
+   ===================================================== */
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.student-info h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  background: linear-gradient(to right, #fff, #ccc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.student-info p {
+  margin-top: 5px;
+  color: var(--text-muted);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border-radius: 30px;
+  border: none;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: transform 0.2s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-neon {
+  background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+  color: white;
+  box-shadow: 0 0 15px rgba(0, 170, 255, 0.4);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--text-muted);
+  color: var(--text-muted);
+}
+.btn-outline:hover {
+  border-color: var(--text-main);
+  color: var(--text-main);
+}
+
+/* =====================================================
+   5. STATS GRID (Các thẻ chỉ số)
+   ===================================================== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.stat-card .content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.stat-label {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stat-value {
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* =====================================================
+   6. TABLE SECTION (Bảng điểm)
+   ===================================================== */
+.table-header h2 {
+  margin: 0 0 20px 0;
+  font-size: 1.4rem;
+  color: var(--text-main);
+}
+
+.table-responsive {
+  overflow-x: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* --- THÊM ĐOẠN NÀY NGAY BÊN DƯỚI --- */
+/* Ẩn thanh cuộn trên Chrome, Safari, Opera */
+.table-responsive::-webkit-scrollbar {
+  display: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  min-width: 700px;
+}
+
+th {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  padding: 10px;
+  letter-spacing: 1px;
+}
+
+td {
+  background: #1a1a24;
+  padding: 15px;
+  text-align: center;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+td:first-child {
+  border-radius: 10px 0 0 10px;
+}
+td:last-child {
+  border-radius: 0 10px 10px 0;
+}
+
+tr:hover td {
+  background: #252530;
+  transform: scale(1.01);
+}
+
+.subject-name {
+  text-align: left;
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.grade-letter {
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+/* =====================================================
+   7. MÀU SẮC & STYLE KHÁC
+   ===================================================== */
+.text-neon-blue {
+  color: var(--neon-blue);
+  text-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
+}
+.text-neon-green {
+  color: var(--neon-green);
+  text-shadow: 0 0 8px rgba(0, 255, 136, 0.3);
+}
+.text-neon-yellow {
+  color: var(--neon-yellow);
+  text-shadow: 0 0 8px rgba(255, 211, 0, 0.3);
+}
+.text-neon-orange {
+  color: var(--neon-orange);
+  text-shadow: 0 0 8px rgba(255, 123, 0, 0.3);
+}
+.text-neon-purple {
+  color: var(--neon-purple);
+  text-shadow: 0 0 8px rgba(160, 0, 255, 0.3);
+}
+.text-neon-pink {
+  color: var(--neon-pink);
+  text-shadow: 0 0 8px rgba(255, 0, 119, 0.3);
+}
+.text-dim {
+  color: #333;
+}
+
+.row-failed td {
+  background: rgba(255, 0, 119, 0.1);
+  border: 1px solid rgba(255, 0, 119, 0.1);
+}
+.row-failed:hover td {
+  background: rgba(255, 0, 119, 0.2);
+}
+
+.badge-fail {
+  background: var(--neon-pink);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+/* =====================================================
+   8. CSS CHO MODAL THANG ĐIỂM (DARK NEON)
+   ===================================================== */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(5px);
+
+  /* Căn giữa */
+  justify-content: center;
+  align-items: center;
+
+  /* Thêm padding để trên màn hình nhỏ không bị sát lề */
+  padding: 10px;
+}
+
+.modal-content {
+  background-color: #0a0a0a;
+  width: 100%;
+  max-width: 700px; /* Giới hạn chiều rộng hợp lý */
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  animation: zoomIn 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid #333;
+
+  /* QUAN TRỌNG: Ẩn mọi thứ tràn ra ngoài viền bo góc */
+  overflow: hidden;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Header Modal */
+.modal-header {
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #222;
+  background: #111; /* Màu nền riêng cho header */
+}
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #fff;
+}
+.close-btn {
+  font-size: 24px;
+  cursor: pointer;
+  color: #888;
+  transition: 0.2s;
+  /* Đảm bảo nút đóng không bị đẩy ra ngoài */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+}
+.close-btn:hover {
+  color: #fff;
+}
+
+/* Khu vực chứa bảng (có cuộn) */
+.scale-container {
+  width: 100%;
+  max-height: 65vh; /* Chiều cao tối đa */
+  overflow-y: auto; /* Cuộn dọc */
+  overflow-x: hidden; /* TẮT THANH CUỘN NGANG TUYỆT ĐỐI */
+}
+
+.scale-container::-webkit-scrollbar {
+  width: 4px;
+}
+.scale-container::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+.scale-container::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 2px;
+}
+
+.scale-table {
+  width: 100%;
+  border-collapse: collapse;
+  /* QUAN TRỌNG: Ghi đè min-width cũ để không bị tràn ngang */
+  min-width: 100% !important;
+}
+
+.scale-table tr:hover td {
+  transform: none !important; /* Tắt hiệu ứng phóng to gây tràn */
+  background-color: rgba(255, 255, 255, 0.03); /* Chỉ làm sáng nhẹ nền */
+}
+
+.scale-table th {
+  background: #151515;
+  color: #888;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  padding: 12px 8px;
+  border-bottom: 1px solid #222;
+  text-align: center;
+  position: sticky; /* Dính tiêu đề lên đầu khi cuộn */
+  top: 0;
+  z-index: 5;
+}
+
+.scale-table td {
+  padding: 10px 5px;
+  border-bottom: 1px solid #1a1a1a;
+  color: #ddd;
+  font-size: 0.9rem;
+  text-align: center;
+  background-color: transparent;
+}
+/* Footer Modal */
+.modal-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #222;
+  display: flex;
+  justify-content: center;
+  background: #111;
+}
+
+/* --- MÀU NỀN CHO CÁC DÒNG (Tương ứng với màu Neon) --- */
+.row-green-bg {
+  background: rgba(0, 255, 136, 0.05) !important;
+}
+.row-blue-bg {
+  background: rgba(0, 170, 255, 0.05) !important;
+}
+.row-yellow-bg {
+  background: rgba(255, 211, 0, 0.05) !important;
+}
+.row-orange-bg {
+  background: rgba(255, 123, 0, 0.05) !important;
+}
+.row-pink-bg {
+  background: rgba(255, 0, 119, 0.08) !important;
+}
+
+.fw-bold {
+  font-weight: 700;
+}
