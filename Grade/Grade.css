@@ -259,6 +259,21 @@ body {
   gap: 12px;
 }
 
+.btn-login {
+  background: rgba(0, 234, 255, 0.1); /* Nền xanh nhạt trong suốt */
+  border: 1px solid #00eaff; /* Viền màu Cyan */
+  color: #00eaff; /* Chữ màu Cyan */
+  box-shadow: 0 0 10px rgba(0, 234, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+  background: #00eaff; /* Hover vào thì nền sáng lên */
+  color: #000; /* Chữ chuyển sang đen */
+  box-shadow: 0 0 20px rgba(0, 234, 255, 0.6); /* Phát sáng mạnh */
+  transform: translateY(-3px);
+}
+
 .btn {
   padding: 10px 20px;
   border-radius: 30px;

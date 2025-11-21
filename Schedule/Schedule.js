@@ -309,18 +309,23 @@ function processAndRenderData(apiData) {
 // 1. Vẽ khung lịch trước
 renderCalendar();
 
-// 2. Kiểm tra xem có dữ liệu cũ (Cache) không? Hiển thị ngay cho mượt
+// 2. Kiểm tra Cache
 const cachedData = localStorage.getItem("cached_schedule");
+
 if (cachedData) {
-  console.log("Hiển thị dữ liệu Cache trước...");
+  // TRƯỜNG HỢP 1: Có dữ liệu cũ -> Hiển thị ngay
+  console.log("Hiển thị dữ liệu Offline (Cache)...");
   processAndRenderData(JSON.parse(cachedData));
 } else {
-  // Nếu chưa có cache thì hiện loading
+  // TRƯỜNG HỢP 2: Chưa có dữ liệu -> Báo người dùng bấm nút
+  // (Thay vì hiện "Đang tải..." mãi mãi)
   const lessonCard = document.getElementById("lessonCard");
-  lessonCard.innerHTML = `<h2 class="lesson-title">Đang tải dữ liệu...</h2>`;
+  lessonCard.innerHTML = `
+    <div style="text-align: center; margin-top: 40px;">
+        <h3 style="color: #00eaff;">Chưa có dữ liệu lịch</h3>
+        <p style="color: #aaa; margin-top: 10px;">
+            Vui lòng bấm nút <strong>"Cập nhật lịch học"</strong> ở góc trên.
+        </p>
+    </div>
+  `;
 }
-
-// 3. Sau đó gọi API để cập nhật dữ liệu mới nhất (chạy ngầm)
-// Bạn có thể bỏ dòng này đi nếu muốn người dùng BẤM NÚT mới cập nhật
-// Hoặc giữ lại để tự động cập nhật mỗi khi vào trang
-loadScheduleFromAPI();
