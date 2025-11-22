@@ -243,7 +243,7 @@ async function performLoginAndFetch(isUpdateMode = false) {
   `;
 
   try {
-    const API_URL = "https://web1-backend-o6y4.onrender.com/api/grades";
+    const API_URL = "https://web1-backend-o6y4.onrender.com/api/grade";
 
     // Gọi API (Không gửi user/pass, server tự mở browser chờ nhập tay)
     const res = await fetch(API_URL, {
