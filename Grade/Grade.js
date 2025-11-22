@@ -292,7 +292,7 @@ async function performLoginAndFetch(isUpdateMode = false) {
 // Hàm kiểm tra trạng thái đăng nhập để Ẩn/Hiện nút
 function checkLoginStateAndUpdateUI() {
   const isLoggedIn = localStorage.getItem("is_grade_logged_in") === "true";
-  const btnLogin = document.getElementById("btnLoginMicrosoft");
+  const btnLogin = document.getElementById("btnLogin");
   const btnUpdate = document.getElementById("btnUpdateGrades");
 
   if (isLoggedIn) {
@@ -311,7 +311,7 @@ function checkLoginStateAndUpdateUI() {
 // ==============================================
 
 // A. Xử lý nút ĐĂNG NHẬP
-const btnLogin = document.getElementById("btnLoginMicrosoft");
+const btnLogin = document.getElementById("btnLogin");
 if (btnLogin) {
   btnLogin.addEventListener("click", () => {
     // Gọi hàm thực hiện: Login -> Wait -> Fetch
@@ -350,15 +350,17 @@ checkLoginStateAndUpdateUI();
 const cachedGrades = localStorage.getItem("cached_grades");
 const isLoggedIn = localStorage.getItem("is_grade_logged_in") === "true";
 
-if (isLoggedIn && cachedGrades) {
-  console.log("Đã đăng nhập -> Hiện dữ liệu cũ");
+// Ưu tiên hiện dữ liệu cũ nếu có (bất kể đã đăng nhập hay chưa)
+if (cachedGrades) {
+  console.log("Có dữ liệu cũ -> Hiển thị ngay");
   renderMainTableAndStats(JSON.parse(cachedGrades));
 } else {
-  // Chưa đăng nhập hoặc chưa có data -> Hiện màn hình yêu cầu Login
+  // Chỉ hiện màn hình "Chưa có dữ liệu" khi cache rỗng
   renderLoginRequiredState();
-  // Xóa cờ cho chắc chắn
-  localStorage.removeItem("is_grade_logged_in");
 }
+
+// Luôn kiểm tra trạng thái nút bấm (để hiện nút Đăng nhập nếu vừa bị out)
+checkLoginStateAndUpdateUI();
 
 // ==============================================
 // 6. UI MODAL & MENU
@@ -386,4 +388,14 @@ if (btnCloseX) btnCloseX.addEventListener("click", closeModal);
 if (btnCloseBottom) btnCloseBottom.addEventListener("click", closeModal);
 window.addEventListener("click", (e) => {
   if (e.target == modal) closeModal();
+});
+
+// ==============================================
+// 7. TỰ ĐỘNG ĐĂNG XUẤT KHI RỜI TRANG
+// ==============================================
+window.addEventListener("beforeunload", () => {
+  // Xóa trạng thái đăng nhập
+  localStorage.removeItem("is_grade_logged_in");
+
+  // LƯU Ý: Không xóa "cached_grades" để giữ lại dữ liệu cũ
 });
